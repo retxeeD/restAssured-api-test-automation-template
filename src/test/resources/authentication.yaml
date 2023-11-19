@@ -1,0 +1,7 @@
+autentication_test:
+  hom:
+    email: testeHom@teste.com
+    password: Test@123
+  dev:
+    email: testeDev@teste.com
+    password: Test@123
