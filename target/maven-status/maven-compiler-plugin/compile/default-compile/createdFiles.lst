@@ -1,0 +1,7 @@
+com\example\restassuredapitestautomation\api\Response.class
+com\example\restassuredapitestautomation\api\IApi.class
+com\example\restassuredapitestautomation\commons\DataTest.class
+com\example\restassuredapitestautomation\api\ResultDescription.class
+com\example\restassuredapitestautomation\api\ErrorResponse.class
+com\example\restassuredapitestautomation\api\Configuration.class
+com\example\restassuredapitestautomation\api\Request.class
