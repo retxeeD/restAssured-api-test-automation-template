@@ -3,7 +3,7 @@ package com.example.restassuredapitestautomation.hooks;
 import com.example.restassuredapitestautomation.commons.DataTest;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import cucumber.api.Scenario;
+import io.cucumber.java.Scenario;
 import lombok.extern.log4j.Log4j;
 
 import java.util.HashMap;

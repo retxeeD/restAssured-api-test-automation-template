@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Cucumber" time="5.019" tests="3" skipped="0" failures="0" errors="0">
+<testcase classname="Obtain authentication token" name="Obtain token succesfully" time="3.562">
+<system-out><![CDATA[
+Given I have valid authentication route request.............................passed
+And I have valid data to obtain authentication token........................passed
+When I do a simple Post request.............................................passed
+Then I receive the token....................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Obtain authentication token" name="Obtain token succesfully 2" time="0.603">
+<system-out><![CDATA[
+Given I have valid authentication route request.............................passed
+And I have valid data to obtain authentication token........................passed
+When I do a simple Post request.............................................passed
+Then I receive the token....................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Obtain authentication token" name="Obtain token succesfully 3" time="0.579">
+<system-out><![CDATA[
+Given I have valid authentication route request.............................passed
+And I have valid data to obtain authentication token........................passed
+When I do a simple Post request.............................................passed
+Then I receive the token....................................................passed
+]]></system-out>
+</testcase>
+</testsuite>

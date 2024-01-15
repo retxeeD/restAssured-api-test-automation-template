@@ -1,19 +1,27 @@
 package com.example.restassuredapitestautomation.api;
 
+import com.example.restassuredapitestautomation.commons.Constant;
 import com.example.restassuredapitestautomation.commons.DataTest;
 import com.example.restassuredapitestautomation.commons.PropertiesLoader;
 import io.restassured.http.ContentType;
-import io.restassured.response.ValidatableResponse;
-import lombok.extern.log4j.Log4j;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
+
+import io.restassured.response.Response;
+import lombok.extern.log4j.Log4j;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 @Log4j
-public class Api  extends ApiConfig implements IApi{
+public class Api extends ApiConfig implements IApi{
 
     private Configuration configuration;
     private ResultDescription resultDescription;
-    private DataTest data;
+    public DataTest data;
 
     public Api(){
         super();
@@ -22,8 +30,8 @@ public class Api  extends ApiConfig implements IApi{
     }
 
     public void initialize(String baseUrl, String endpoint){
-        this.baseUrl = baseUrl;
-        configuration.endpoint = PropertiesLoader.getInstance().getValue("/application.properties", endpoint);
+        this.baseUrl = PropertiesLoader.getInstance().getValueWithEnvironment(baseUrl);
+        configuration.endpoint = endpoint;
         configuration.requestSpecification = create();
         configuration.initialization();
     }
@@ -59,62 +67,54 @@ public class Api  extends ApiConfig implements IApi{
         return this;
     }
 
-    public ResultDescription postMethod(Request request){
+    public Response postMethod(DataTest data, String fileName) throws IOException {
+        String jsonSchema = FileUtils.readFileToString(new File(Constant.JSON_SCHEMA_PATH_BASE + fileName));
         configuration.initialization();
-        setBody(request);
-        ValidatableResponse validatableResponse = configuration.requestSpecification
-                .when()
-                .post(configuration.endpoint)
-                .then();
-        return summaryResult(validatableResponse);
+        setBody(data.request);
+        data.response = configuration.requestSpecification.when().post(configuration.endpoint);
+        data.response
+                .then()
+                .assertThat()
+                .body(matchesJsonSchema(jsonSchema));
+        this.data = data;
+        summaryResult();
+        return data.response;
     }
 
-    public ResultDescription getMethod(){
+    public Response getMethod(DataTest data){
         configuration.initialization();
-        ValidatableResponse validatableResponse = configuration.requestSpecification
-                .contentType(ContentType.JSON)
-                .when()
-                .get(configuration.endpoint)
-                .then();
-        return summaryResult(validatableResponse);
+        data.response = configuration.requestSpecification.when().get(configuration.endpoint);
+        return data.response;
     }
 
-    public ResultDescription putMethod(Request request){
+    public Response putMethod(DataTest data){
         configuration.initialization();
-        setBody(request);
-        ValidatableResponse validatableResponse = this.configuration.requestSpecification
-                .put(configuration.endpoint)
-                .then();
-        return summaryResult(validatableResponse);
+        setBody(data.request);
+        data.response = configuration.requestSpecification.when().put(configuration.endpoint);
+        return data.response;
     }
 
-    public ResultDescription patchMethod(Request request){
+    public Response patchMethod(DataTest data){
         configuration.initialization();
-        setBody(request);
-        ValidatableResponse validatableResponse = this.configuration.requestSpecification
-                .patch(configuration.endpoint)
-                .then();
-        return summaryResult(validatableResponse);
+        setBody(data.request);
+        data.response = configuration.requestSpecification.when().patch(configuration.endpoint);
+        return data.response;
     }
 
-    public ResultDescription deleteMethod(Request request){
+    public Response deleteMethod(DataTest data){
         configuration.initialization();
-        setBody(request);
-        ValidatableResponse validatableResponse = this.configuration.requestSpecification
-                .when()
-                .delete(configuration.endpoint)
-                .then();
-        return summaryResult(validatableResponse);
+        setBody(data.request);
+        data.response = configuration.requestSpecification.when().delete(configuration.endpoint);
+        return data.response;
     }
 
-    private void setBody(Request request){
+    private void setBody(JSONObject request){
         if (request != null){
-            configuration.requestSpecification.contentType(ContentType.JSON).body(request);
+            configuration.requestSpecification.contentType(ContentType.JSON).body(request.toJSONString());
         }
     }
 
-    private ResultDescription summaryResult(ValidatableResponse validatableResponse){
-        ResultDescription result = new ResultDescription(validatableResponse);
+    private void summaryResult(){
         StringBuilder requestAndResponseLog = new StringBuilder();
         requestAndResponseLog.append("[JSON REQUEST API ")
                 .append(configuration.endpoint)
@@ -126,10 +126,9 @@ public class Api  extends ApiConfig implements IApi{
                 .append(configuration.responseWriter.toString())
                 .append("\n");
         log.info(requestAndResponseLog.toString());
-        data.scenario.write(requestAndResponseLog.toString());
+        //data.scenario.log(requestAndResponseLog.toString());
         configuration.requestSpecification = create();
         configuration.initialization();
-        return result;
     }
 
 }

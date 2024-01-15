@@ -51,31 +51,19 @@ public class PropertiesLoader {
         }
     }
 
-    private void load(String path) {
-        try {
-            properties = new Properties();
-            properties.load(getClass().getResourceAsStream(path));
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
     public String getValueWithEnvironment(String key){
         try {
-            String environment = getValueEnvironment(Constant.ENVIRONMENT).toLowerCase();
+            String environment = getValue(Constant.ENVIRONMENT).toLowerCase();
             return properties.getProperty(environment.concat(".").concat(key));
         }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    public String getValueEnvironment(String key){
+    private void load(String path) {
         try {
-            String value = System.getenv(key);
-            if (null != value){
-                return value;
-            }
-            return properties.getProperty(key);
+            properties = new Properties();
+            properties.load(getClass().getResourceAsStream(path));
         }catch (Exception e){
             throw new RuntimeException(e);
         }

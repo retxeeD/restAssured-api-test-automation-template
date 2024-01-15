@@ -1,10 +1,10 @@
 package com.example.restassuredapitestautomation.commons;
 
-import com.example.restassuredapitestautomation.api.Request;
-import com.example.restassuredapitestautomation.api.Response;
 import com.example.restassuredapitestautomation.api.ResultDescription;
+import io.cucumber.java.Scenario;
+import io.restassured.response.Response;
 import org.apache.log4j.Logger;
-import cucumber.api.Scenario;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ public class DataTest {
     final static Logger logger = Logger.getLogger(DataTest.class);
 
     public ResultDescription result;
-    public Request request;
+    public JSONObject request;
     public Response response;
 
     public HashMap<String, String> mapPathParam;

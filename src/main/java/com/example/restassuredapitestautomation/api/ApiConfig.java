@@ -22,13 +22,12 @@ public class ApiConfig {
     private RequestSpecification defineBaseUrl(){
         String environment = null;
         if(System.getenv(Constant.ENVIRONMENT) == null || System.getenv(Constant.ENVIRONMENT).equals("")){
-            environment = getEnvironment();
+            environment = Constant.ENVIRONMENT;
         }else{
             environment = System.getenv(Constant.ENVIRONMENT);
         }
         System.setProperty(Constant.ENVIRONMENT, environment);
-        String url = getBaseUrl(environment, this.baseUrl);
-        RequestSpecification espc = new RequestSpecBuilder().setBaseUri(url).build();
+        RequestSpecification espc = new RequestSpecBuilder().setBaseUri(this.baseUrl).build();
         return RestAssured.given().spec(espc);
     }
 
@@ -45,7 +44,7 @@ public class ApiConfig {
     }
 
     private String getEnvironment(){
-        String environment = PropertiesLoader.getInstance().getValueEnvironment(Constant.ENVIRONMENT).toLowerCase();
+        String environment = Constant.ENVIRONMENT.toLowerCase();
         return environment;
     }
 
@@ -55,7 +54,7 @@ public class ApiConfig {
 
     private RequestSpecification verifyProxy(RequestSpecification specification){
         PropertiesLoader propertiesLoader = PropertiesLoader.getInstance();
-        boolean proxy = Boolean.parseBoolean(propertiesLoader.getValueEnvironment("proxy").trim().toLowerCase());
+        boolean proxy = Boolean.parseBoolean(propertiesLoader.getValue("proxy").trim().toLowerCase());
         if (proxy){
             specification.proxy(propertiesLoader.getValue("proxy.host").trim(), Integer.parseInt(propertiesLoader.getValue("proxy.port").trim()));
         }

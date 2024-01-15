@@ -18,13 +18,11 @@ public class Report {
         PropertiesLoader propertiesLoader = PropertiesLoader.getInstance();
         File reportOutoutDirectory = new File("target");
         List<String> jsonFiles = new ArrayList<String>();
-        String reportJsonPath = Optional.ofNullable(
-                propertiesLoader.getValueEnvironment(Constant.VARIABLE_REPORT_JSON_PATH))
-                .orElse("./target/report.json");
+        String reportJsonPath = "./target/report.json";
         jsonFiles.add(reportJsonPath);
         String projectName, environment;
-        projectName = propertiesLoader.getValueEnvironment("CI_PROJECT_NAME");
-        environment = propertiesLoader.getValueEnvironment(Constant.ENVIRONMENT);
+        projectName = propertiesLoader.getValue("CI_PROJECT_NAME");
+        environment = Constant.ENVIRONMENT;
 
         if (environment.toLowerCase().contains("dev")){
             environment = "Development";
@@ -38,6 +36,7 @@ public class Report {
         configuration.addClassifications("Environment", environment);
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
         reportBuilder.generateReports();
+
 
     }
 

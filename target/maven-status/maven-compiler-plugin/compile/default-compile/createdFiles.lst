@@ -1,7 +1,14 @@
-com\example\restassuredapitestautomation\api\Response.class
+com\example\restassuredapitestautomation\steps\AuthSteps.class
+com\example\restassuredapitestautomation\steps\StepUtils.class
+com\example\restassuredapitestautomation\commons\PropertiesLoader.class
 com\example\restassuredapitestautomation\api\IApi.class
+com\example\restassuredapitestautomation\api\Request.class
+com\example\restassuredapitestautomation\api\Response.class
+com\example\restassuredapitestautomation\api\Api.class
 com\example\restassuredapitestautomation\commons\DataTest.class
+com\example\restassuredapitestautomation\contracts\Auth\ObtainTokenContract.class
 com\example\restassuredapitestautomation\api\ResultDescription.class
 com\example\restassuredapitestautomation\api\ErrorResponse.class
 com\example\restassuredapitestautomation\api\Configuration.class
-com\example\restassuredapitestautomation\api\Request.class
+com\example\restassuredapitestautomation\api\ApiConfig.class
+com\example\restassuredapitestautomation\commons\Constant.class

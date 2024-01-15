@@ -1,0 +1,3 @@
+com\example\restassuredapitestautomation\util\Report.class
+com\example\restassuredapitestautomation\run\CucumberRunner.class
+com\example\restassuredapitestautomation\hooks\Hooks.class
